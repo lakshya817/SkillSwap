@@ -57,10 +57,15 @@ jobs:
         run: |
           mysql -h 127.0.0.1 -uroot -ptest-root-password skillswap -e "CALL sp_find_teachers('Python');"
 
+     
       - name: Test review trigger rejects outsiders
         run: |
           set -eu
 
-          if mysql -h 127.0.0.1 -uroot -ptest-root-password skillswap -e "
-            INSERT INTO reviews (session_id, reviewer_id, rating, comment)
-            SELECT se.session_id, u.user_id, 5, 'Invalid outsider
+          if mysql -h 127.0.0.1 -uroot -ptest-root-password skillswap -e "INSERT INTO reviews (session_id, reviewer_id, rating, comment) SELECT se.session_id, u.user_id, 5, 'Invalid outsider review' FROM sessions se CROSS JOIN users u WHERE u.email = 'kabir.test@example.com' LIMIT 1;"; then
+            echo "ERROR: An outsider was allowed to review the session."
+            exit 1
+          else
+            echo "PASS: The trigger rejected the outsider review."
+          fi
+
