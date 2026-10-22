@@ -1,5 +1,5 @@
 
-name: Test SkillSwap
+name: Test SkillSwap Application
 
 on:
   push:
@@ -9,11 +9,11 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  app-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get repository code
+      - name: Check out repository
         uses: actions/checkout@v6
 
       - name: Set up Python
@@ -22,12 +22,15 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Check Python syntax
-        run: python -m py_compile app.py
+        run: |
+          python -m py_compile app.py
 
-      - name: Test SkillSwap routes
+      - name: Test Flask routes
         run: |
           python - <<'PY'
           from app import app
@@ -36,13 +39,33 @@ jobs:
 
           response = client.get("/")
           assert response.status_code == 200
-          data = response.get_json()
-          assert data["project"] == "SkillSwap"
-          assert data["status"] == "running"
+          assert response.json["project"] == "SkillSwap"
 
           response = client.get("/health")
           assert response.status_code == 200
-          assert response.get_json()["status"] == "healthy"
+          assert response.json["status"] == "healthy"
 
-          print("All SkillSwap tests passed!")
+          print("PASS: Home and health routes work.")
+          PY
+
+      - name: Test database health route without a database
+        run: |
+          python - <<'PY'
+          from unittest.mock import patch
+          import mysql.connector
+          from app import app
+
+          client = app.test_client()
+
+          with patch(
+              "app.get_db_connection",
+              side_effect=mysql.connector.Error("Test database unavailable")
+          ):
+              response = client.get("/api/db-health")
+
+          assert response.status_code == 503
+          assert response.json["status"] == "unavailable"
+          assert response.json["database"] == "disconnected"
+
+          print("PASS: Database failures are handled safely.")
           PY
