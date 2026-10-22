@@ -1,7 +1,6 @@
 
 USE skillswap;
 
--- Verify the sample users were loaded.
 DELIMITER //
 
 CREATE PROCEDURE sp_run_database_tests()
@@ -41,10 +40,34 @@ BEGIN
     SELECT COUNT(*) INTO v_python_teachers
     FROM vw_teachable_skills
     WHERE skill_name = 'Python'
-      AND email IS NULL;
+      AND full_name = 'Aarav Sharma';
 
-    -- The view does not expose email, so use its user ID
-    -- to verify the expected Python teacher instead.
+    IF v_python_teachers <> 1 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Python teacher view test failed';
+    END IF;
+
+    SELECT COUNT(*) INTO v_request_count
+    FROM exchange_requests
+    WHERE status = 'ACCEPTED';
+
+    IF v_request_count < 1 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Expected an accepted exchange request';
+    END IF;
+
+    SELECT COUNT(*) INTO v_session_count
+    FROM sessions
+    WHERE status = 'SCHEDULED';
+
+    IF v_session_count < 1 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Expected a scheduled session';
+    END IF;
+
+    SELECT 'All SkillSwap database assertions passed'
+        AS result;
 END //
 
 DELIMITER ;
+
