@@ -1,0 +1,52 @@
+
+name: Test SkillSwap Database
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mysql-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test-root-password
+          MYSQL_DATABASE: skillswap
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -ptest-root-password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+
+      - name: Create database tables
+        run: |
+          mysql -h 127.0.0.1 -uroot -ptest-root-password skillswap < database/schema.sql
+
+      - name: Create database view
+        run: |
+          mysql -h 127.0.0.1 -uroot -ptest-root-password skillswap < database/views.sql
+
+      - name: Create stored procedure
+        run: |
+          mysql -h 127.0.0.1 -uroot -ptest-root-password skillswap < database/procedures.sql
+
+      - name: Create trigger
+        run: |
+          mysql -h 127.0.0.1 -uroot -ptest-root-password skillswap < database/triggers.sql
