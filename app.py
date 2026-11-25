@@ -38,11 +38,23 @@ def login_required(function):
     return wrapper
 
 
-# Frontend homepage
+# ==============================
+# FRONTEND ROUTES
+# ==============================
+
 @app.route("/")
 def home():
     return render_template("index.html")
 
+
+@app.route("/register")
+def register_page():
+    return render_template("register.html")
+
+
+# ==============================
+# HEALTH CHECK ROUTES
+# ==============================
 
 @app.route("/health")
 def health():
@@ -75,6 +87,10 @@ def database_health():
         if connection is not None and connection.is_connected():
             connection.close()
 
+
+# ==============================
+# REGISTRATION API
+# ==============================
 
 @app.route("/api/register", methods=["POST"])
 def register():
@@ -123,6 +139,7 @@ def register():
     except mysql.connector.IntegrityError as error:
         if error.errno == 1062:
             return jsonify({"error": "Email already registered"}), 409
+
         app.logger.exception("Registration integrity error")
         return jsonify({"error": "Registration failed"}), 400
 
@@ -136,6 +153,10 @@ def register():
         if connection is not None and connection.is_connected():
             connection.close()
 
+
+# ==============================
+# LOGIN API
+# ==============================
 
 @app.route("/api/login", methods=["POST"])
 def login():
@@ -194,12 +215,20 @@ def login():
             connection.close()
 
 
+# ==============================
+# LOGOUT API
+# ==============================
+
 @app.route("/api/logout", methods=["POST"])
 @login_required
 def logout():
     session.clear()
     return jsonify({"message": "Logged out successfully"})
 
+
+# ==============================
+# USER PROFILE API
+# ==============================
 
 @app.route("/api/me", methods=["GET"])
 @login_required
