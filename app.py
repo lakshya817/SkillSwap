@@ -1,10 +1,10 @@
-
+```python
 import os
 import re
 from functools import wraps
 
 import mysql.connector
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -38,13 +38,10 @@ def login_required(function):
     return wrapper
 
 
+# Frontend homepage
 @app.route("/")
 def home():
-    return jsonify({
-        "project": "SkillSwap",
-        "message": "Welcome to SkillSwap!",
-        "status": "running"
-    })
+    return render_template("index.html")
 
 
 @app.route("/health")
@@ -244,4 +241,4 @@ def get_profile():
 
 if __name__ == "__main__":
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
-
+```
