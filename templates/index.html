@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SkillSwap connects people who want to teach, learn and exchange valuable skills.">
+    <title>SkillSwap | Swap Skills, Spark Growth</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="/" class="brand">
+            <span class="brand-icon">S</span>
+            <span>SkillSwap</span>
+        </a>
+
+        <nav class="sidebar-nav" aria-label="Main navigation">
+            <a href="/" class="nav-link active">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="#messages" class="nav-link">
+                <span class="nav-icon">✉</span>
+                Messages
+            </a>
+
+            <a href="#skill-rooms" class="nav-link">
+                <span class="nav-icon">♧</span>
+                Skill Rooms
+            </a>
+
+            <a href="#settings" class="nav-link">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+            <a href="#referrals" class="nav-link">
+                <span class="nav-icon">⇄</span>
+                Invite and Earn
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#faq" class="nav-link">
+                <span class="nav-icon">ⓘ</span>
+                FAQ
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <a href="#" class="nav-link logout-link" id="logoutBtn">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+            <div class="referral-card">
+                <span class="referral-icon">↗</span>
+                <div>
+                    <strong>Grow together</strong>
+                    <p>Invite friends and expand your learning community.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+
+        <!-- Top navigation -->
+        <header class="topbar">
+            <a href="/" class="mobile-brand">SkillSwap</a>
+
+            <nav class="top-navigation">
+                <a href="#benefits">Benefits</a>
+                <a href="#how-it-works">How it works</a>
+                <a href="#about">About us</a>
+            </nav>
+
+            <div class="top-actions">
+                <a href="#signup" class="signup-link">Sign up</a>
+                <a href="#login" class="login-link">Login</a>
+                <a href="#waitlist" class="waitlist-btn">Join Waitlist</a>
+            </div>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero" id="about">
+
+            <div class="hero-content">
+                <span class="eyebrow">
+                    LEARN TOGETHER. GROW TOGETHER.
+                </span>
+
+                <h1>
+                    Swap Skills,<br>
+                    <span>Spark Growth.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Connect with people around the world to
+                    teach and learn new skills — no money needed,
+                    just passion, collaboration and knowledge.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#signup" class="primary-btn">
+                        Join the Community
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <div class="hero-trust">
+                    <span class="trust-dot"></span>
+                    A community built around shared knowledge
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <img
+                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1000&auto=format&fit=crop&q=85"
+                    alt="People collaborating and sharing knowledge"
+                >
+
+                <div class="floating-card skill-card-one">
+                    <span class="floating-icon orange">✦</span>
+                    <div>
+                        <strong>Share expertise</strong>
+                        <small>Teach what you know</small>
+                    </div>
+                </div>
+
+                <div class="floating-card skill-card-two">
+                    <span class="floating-icon blue">↗</span>
+                    <div>
+                        <strong>Learn something new</strong>
+                        <small>Grow through collaboration</small>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Benefits -->
+        <section class="benefits-section" id="benefits">
+            <div class="section-heading">
+                <span class="eyebrow">WHY SKILLSWAP</span>
+                <h2>Knowledge is better when shared.</h2>
+                <p>Turn your expertise into opportunities for collective growth.</p>
+            </div>
+
+            <div class="benefit-grid">
+                <article class="benefit-card">
+                    <span class="benefit-icon">↔</span>
+                    <h3>Mutual Learning</h3>
+                    <p>Exchange knowledge with people who have complementary skills and interests.</p>
+                </article>
+
+                <article class="benefit-card">
+                    <span class="benefit-icon">◎</span>
+                    <h3>Meaningful Connections</h3>
+                    <p>Connect with a community of curious learners and passionate contributors.</p>
+                </article>
+
+                <article class="benefit-card">
+                    <span class="benefit-icon">✧</span>
+                    <h3>Continuous Growth</h3>
+                    <p>Develop practical abilities through collaboration and shared experiences.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="how-section" id="how-it-works">
+            <div class="section-heading">
+                <span class="eyebrow">GET STARTED</span>
+                <h2>Three steps. Endless possibilities.</h2>
+            </div>
+
+            <div class="steps-grid">
+                <article class="step-card">
+                    <span class="step-number">01</span>
+                    <h3>Create your profile</h3>
+                    <p>Introduce yourself and showcase the skills you can teach.</p>
+                </article>
+
+                <article class="step-card">
+                    <span class="step-number">02</span>
+                    <h3>Discover your match</h3>
+                    <p>Find people whose expertise aligns with what you want to learn.</p>
+                </article>
+
+                <article class="step-card">
+                    <span class="step-number">03</span>
+                    <h3>Exchange and grow</h3>
+                    <p>Collaborate, share knowledge and build valuable connections.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <a href="/" class="brand footer-brand">
+                <span class="brand-icon">S</span>
+                <span>SkillSwap</span>
+            </a>
+            <p>Empowering people through shared knowledge.</p>
+            <span>© 2026 SkillSwap. All rights reserved.</span>
+        </footer>
+
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
