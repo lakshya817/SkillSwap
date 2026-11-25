@@ -37,15 +37,23 @@ jobs:
 
           client = app.test_client()
 
+          # Test homepage
           response = client.get("/")
           assert response.status_code == 200
-          assert response.json["project"] == "SkillSwap"
+          assert b"SkillSwap" in response.data
 
+          # Test registration page
+          response = client.get("/register")
+          assert response.status_code == 200
+          assert b"SkillSwap" in response.data
+
+          # Test health endpoint
           response = client.get("/health")
           assert response.status_code == 200
-          assert response.json["status"] == "healthy"
+          assert response.get_json()["status"] == "healthy"
 
-          print("PASS: Home and health routes work.")
+          print("PASS: Homepage, registration and health routes work.")
+
           PY
 
       - name: Test database health route without a database
@@ -64,8 +72,10 @@ jobs:
               response = client.get("/api/db-health")
 
           assert response.status_code == 503
-          assert response.json["status"] == "unavailable"
-          assert response.json["database"] == "disconnected"
+          data = response.get_json()
+          assert data["status"] == "unavailable"
+          assert data["database"] == "disconnected"
 
           print("PASS: Database failures are handled safely.")
+
           PY
