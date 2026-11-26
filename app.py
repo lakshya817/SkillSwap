@@ -136,6 +136,10 @@ def register():
         connection.commit()
         user_id = cursor.lastrowid
 
+        # Automatically log in the newly registered user
+        session.clear()
+        session["user_id"] = user_id
+
         return jsonify({
             "message": "Registration successful",
             "user_id": user_id
@@ -275,3 +279,4 @@ def get_profile():
 
 if __name__ == "__main__":
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
+
