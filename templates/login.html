@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign in to SkillSwap and continue learning, sharing skills and connecting with a community.">
+
+    <title>Sign In | SkillSwap</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+</head>
+
+<body>
+
+    <main class="auth-layout">
+
+        <!-- Brand Section -->
+        <section class="auth-brand-panel">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">S</span>
+                <span>SkillSwap</span>
+            </a>
+
+            <div class="auth-brand-content">
+
+                <span class="auth-eyebrow">WELCOME BACK</span>
+
+                <h1>Your next opportunity starts with a connection.</h1>
+
+                <p>
+                    Sign in to reconnect with your learning community,
+                    exchange knowledge and keep moving forward.
+                </p>
+
+            </div>
+
+            <div class="auth-brand-bottom">
+                Learn together. Grow together.
+            </div>
+
+        </section>
+
+
+        <!-- Login Form Section -->
+        <section class="auth-form-panel">
+
+            <div class="auth-form-container">
+
+                <h2>Welcome back</h2>
+
+                <p class="auth-subtitle">
+                    Sign in to continue your SkillSwap journey.
+                </p>
+
+                <div id="loginMessage" class="auth-message" role="alert" aria-live="polite"></div>
+
+                <form class="auth-form" id="loginForm">
+
+                    <label for="loginEmail">Email address</label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <label for="loginPassword">Password</label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <label class="password-toggle">
+                        <input type="checkbox" id="togglePassword">
+                        Show password
+                    </label>
+
+                    <button type="submit" id="loginButton">
+                        Sign In <span aria-hidden="true">→</span>
+                    </button>
+
+                </form>
+
+                <div class="auth-switch">
+                    New to SkillSwap?
+                    <a href="/register">Create an account</a>
+                </div>
+
+                <div class="auth-footer">
+                    © SkillSwap. All rights reserved.
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
+
+</body>
+</html>
