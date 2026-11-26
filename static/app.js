@@ -6,7 +6,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // Sidebar navigation active state
-    const navLinks = document.querySelectorAll(".sidebar-nav .nav-link");
+    const navLinks = document.querySelectorAll(
+        ".sidebar-nav .nav-link"
+    );
 
     navLinks.forEach(link => {
         link.addEventListener("click", () => {
@@ -37,12 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Logout using the existing Flask API
-    const logoutButton = document.getElementById("logoutBtn");
+    // Reliable logout handler
+    const logoutButtons = document.querySelectorAll(
+        "#logoutBtn, .logout-btn, [data-action='logout']"
+    );
 
-    if (logoutButton) {
-        logoutButton.addEventListener("click", async event => {
+    logoutButtons.forEach(button => {
+        button.addEventListener("click", async event => {
             event.preventDefault();
+
+            if (button.dataset.loggingOut === "true") return;
 
             const confirmed = window.confirm(
                 "Are you sure you want to log out?"
@@ -50,25 +56,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!confirmed) return;
 
+            button.dataset.loggingOut = "true";
+
             try {
                 const response = await fetch("/api/logout", {
                     method: "POST",
-                    credentials: "same-origin"
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 });
 
                 if (response.ok) {
-                    window.location.href = "/";
-                } else if (response.status === 401) {
-                    alert("You are not currently logged in.");
-                } else {
-                    alert("Unable to log out. Please try again.");
+                    window.location.replace("/login");
+                    return;
                 }
+
+                button.dataset.loggingOut = "false";
+                alert("Unable to log out. Please try again.");
+
             } catch (error) {
                 console.error("Logout error:", error);
+                button.dataset.loggingOut = "false";
                 alert("A network error occurred. Please try again.");
             }
         });
-    }
+    });
 
     // Update the current year automatically
     const yearElement = document.querySelector("[data-current-year]");
