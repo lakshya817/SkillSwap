@@ -28,8 +28,14 @@ app.config.update(
     MAX_CONTENT_LENGTH=100 * 1024 * 1024
 )
 
-# Persistent App Service storage
-if os.path.isdir("/home"):
+# =========================================
+# UPLOAD STORAGE CONFIGURATION
+# =========================================
+
+# Azure App Service sets WEBSITE_INSTANCE_ID.
+# GitHub Actions and local environments use instance/uploads.
+
+if os.environ.get("WEBSITE_INSTANCE_ID"):
     UPLOAD_FOLDER = "/home/data/skillswap_uploads"
 else:
     UPLOAD_FOLDER = os.path.join(app.instance_path, "uploads")
@@ -42,6 +48,10 @@ VIDEO_EXTENSIONS = {"mp4", "webm", "mov"}
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
+# =========================================
+# DATABASE CONNECTION
+# =========================================
+
 def get_db_connection():
     return mysql.connector.connect(
         host=os.environ.get("DB_HOST", "127.0.0.1"),
@@ -52,6 +62,10 @@ def get_db_connection():
         connection_timeout=5,
     )
 
+
+# =========================================
+# AUTHENTICATION HELPERS
+# =========================================
 
 def login_required(function):
     @wraps(function)
@@ -82,6 +96,10 @@ def valid_url(value):
         return False
 
 
+# =========================================
+# FILE UPLOAD HELPER
+# =========================================
+
 def save_uploaded_file(upload, allowed_extensions):
     if not upload or not upload.filename:
         return None
@@ -100,13 +118,15 @@ def save_uploaded_file(upload, allowed_extensions):
         )
 
     stored_name = f"{uuid.uuid4().hex}.{extension}"
-    upload.save(os.path.join(UPLOAD_FOLDER, stored_name))
+    file_path = os.path.join(UPLOAD_FOLDER, stored_name)
+
+    upload.save(file_path)
 
     return {
         "url": f"/uploads/{stored_name}",
         "filename": original_name,
         "mime_type": upload.mimetype or "application/octet-stream",
-        "size": os.path.getsize(os.path.join(UPLOAD_FOLDER, stored_name))
+        "size": os.path.getsize(file_path)
     }
 
 
@@ -705,9 +725,7 @@ def create_lesson():
             }), 400
 
     elif lesson_type == "RECORDED":
-        if upload:
-            pass
-        elif not valid_url(content_url):
+        if not upload and not valid_url(content_url):
             return jsonify({
                 "error": "Upload a video or provide a valid video URL"
             }), 400
@@ -734,6 +752,7 @@ def create_lesson():
                 if lesson_type == "RECORDED"
                 else DOCUMENT_EXTENSIONS
             )
+
             saved_file = save_uploaded_file(upload, allowed)
             content_url = saved_file["url"]
 
@@ -760,6 +779,7 @@ def create_lesson():
                             saved_file["url"].split("/")[-1]
                         )
                     )
+
                 return jsonify({
                     "error": "Course not found or you do not own it"
                 }), 403
@@ -803,6 +823,10 @@ def create_lesson():
 
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
+
+    except OSError:
+        app.logger.exception("Lesson file storage error")
+        return jsonify({"error": "Unable to save uploaded file"}), 500
 
     except mysql.connector.Error:
         app.logger.exception("Lesson creation error")
@@ -870,3 +894,4 @@ def get_my_lessons():
 
 if __name__ == "__main__":
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
+
