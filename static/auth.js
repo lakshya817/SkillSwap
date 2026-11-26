@@ -1,4 +1,5 @@
 
+
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("registerForm");
 
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: "same-origin",
                 body: JSON.stringify({
                     full_name: fullName,
                     email: email,
@@ -57,14 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             showMessage(
-                "Your account has been created successfully. Redirecting to sign in...",
+                "Account created successfully! Welcome to SkillSwap. Redirecting...",
                 "success"
             );
 
-            form.reset();
-
             setTimeout(() => {
-                window.location.href = "/login";
+                window.location.href = "/";
             }, 1500);
 
         } catch (error) {
@@ -74,8 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 "error"
             );
         } finally {
-            button.disabled = false;
-            button.innerHTML = 'Create Account <span aria-hidden="true">→</span>';
+            if (!message.classList.contains("success")) {
+                button.disabled = false;
+                button.innerHTML = 'Create Account <span aria-hidden="true">→</span>';
+            }
         }
     });
 
