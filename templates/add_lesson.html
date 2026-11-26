@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Publish live lessons, recorded courses and learning materials on SkillSwap.">
+<title>Publish a Lesson | SkillSwap</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f8fc;color:#20243a}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#fff;border-right:1px solid #eceef4;padding:30px 20px;flex-shrink:0}
+.brand{font-size:25px;font-weight:800;letter-spacing:-1px;margin:0 0 42px 8px}
+.brand span{color:#6858e8}
+.nav-label{color:#9a9daf;font-size:11px;font-weight:700;letter-spacing:1.3px;margin:25px 10px 12px}
+.nav-link{display:block;padding:13px 14px;border-radius:10px;color:#73778d;font-size:14px;font-weight:600;margin:5px 0}
+.nav-link:hover,.nav-link.active{background:#f0eeff;color:#6858e8}
+.main{flex:1;min-width:0}
+.topbar{height:76px;background:#fff;border-bottom:1px solid #eceef4;display:flex;align-items:center;justify-content:space-between;padding:0 5%}
+.topbar p{color:#85899b;font-size:13px}
+.top-actions{display:flex;align-items:center;gap:20px}
+.top-actions a{font-size:13px;font-weight:600;color:#656a7e}
+.content{max-width:1050px;margin:auto;padding:48px 5%}
+.eyebrow{color:#6858e8;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:13px}
+h1{font-size:clamp(30px,4vw,42px);letter-spacing:-1.7px;margin-bottom:12px}
+.subtitle{color:#85899b;line-height:1.7;font-size:15px}
+.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:32px 0 25px}
+.format-card{background:#fff;border:1px solid #e7e8f0;border-radius:12px;padding:20px;cursor:pointer;text-align:left;transition:.2s}
+.format-card:hover,.format-card.selected{border-color:#6858e8;background:#f8f7ff;box-shadow:0 5px 20px rgba(80,65,190,.07)}
+.format-icon{font-size:25px;margin-bottom:15px}
+.format-card h3{font-size:15px;margin-bottom:7px}
+.format-card p{font-size:12px;color:#85899b;line-height:1.5}
+.form-panel{background:#fff;border:1px solid #eceef4;border-radius:14px;padding:30px}
+.form-panel h2{font-size:19px;margin-bottom:7px}
+.form-intro{font-size:13px;color:#85899b;margin-bottom:25px}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:9px;color:#41465b}
+.field input,.field select,.field textarea{width:100%;padding:13px 14px;border:1px solid #e3e5ed;border-radius:8px;outline:none;background:#fff;color:#30354a}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#6858e8}
+.field textarea{min-height:105px;resize:vertical;line-height:1.5}
+.field small{display:block;color:#9699a9;font-size:11px;margin-top:7px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.format-fields{display:none}
+.format-fields.active{display:block}
+.submit-btn{background:#6858e8;color:white;border:0;border-radius:9px;padding:14px 23px;font-weight:700;cursor:pointer}
+.submit-btn:hover{background:#5645d2}
+.submit-btn:disabled{opacity:.6;cursor:wait}
+.message{margin-top:18px;font-size:13px;line-height:1.5}
+.message.error{color:#c0394b}
+.message.success{color:#218653}
+.file-box{border:1px dashed #c9c5eb;background:#faf9ff;border-radius:9px;padding:22px;text-align:center}
+.file-box input{border:0;padding:8px}
+@media(max-width:800px){.format-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:700px){.sidebar{width:75px;padding:25px 8px}.brand{font-size:18px;margin-left:3px}.nav-link{font-size:0;text-align:center;padding:14px 3px}.nav-label{font-size:9px;margin-left:3px}.topbar{padding:0 15px}.content{padding:32px 18px}.form-panel{padding:21px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<div class="brand">Skill<span>Swap.</span></div>
+<div class="nav-label">WORKSPACE</div>
+<a class="nav-link" href="/">⌂ &nbsp; Dashboard</a>
+<a class="nav-link" href="/courses">▦ &nbsp; Courses</a>
+<a class="nav-link active" href="/add-lesson">＋ &nbsp; Add a Lesson</a>
+<div class="nav-label">ACCOUNT</div>
+<a class="nav-link" href="/">← &nbsp; Home</a>
+<a class="nav-link logout-btn" href="/login">↪ &nbsp; Logout</a>
+</aside>
+
+<main class="main">
+<header class="topbar">
+<p>Teaching workspace / Publish a lesson</p>
+<div class="top-actions">
+<a href="/courses">Explore courses</a>
+<a href="/">Home</a>
+</div>
+</header>
+
+<section class="content">
+<div class="eyebrow">Share what you know</div>
+<h1>Create a lesson.</h1>
+<p class="subtitle">Turn your knowledge into something valuable. Choose a format and share your expertise with the SkillSwap community.</p>
+
+<div class="format-grid">
+<button type="button" class="format-card selected" data-format="LIVE">
+<div class="format-icon">📡</div>
+<h3>Live lesson</h3>
+<p>Schedule an interactive session with a meeting link.</p>
+</button>
+<button type="button" class="format-card" data-format="RECORDED">
+<div class="format-icon">🎬</div>
+<h3>Recorded lesson</h3>
+<p>Share a recorded video or upload your lesson video.</p>
+</button>
+<button type="button" class="format-card" data-format="UPLOAD">
+<div class="format-icon">📄</div>
+<h3>Upload materials</h3>
+<p>Share notes, presentations and learning documents.</p>
+</button>
+</div>
+
+<div class="form-panel">
+<h2 id="formTitle">Publish a live lesson</h2>
+<p class="form-intro" id="formIntro">Set a date and invite learners to join your session.</p>
+
+<form id="lessonForm" enctype="multipart/form-data">
+<input type="hidden" name="lesson_type" id="lessonType" value="LIVE">
+
+<div class="field">
+<label for="title">Lesson title *</label>
+<input id="title" name="title" maxlength="150" required placeholder="e.g. Introduction to Python Programming">
+</div>
+
+<div class="field">
+<label for="description">Description *</label>
+<textarea id="description" name="description" required placeholder="What will learners gain from this lesson?"></textarea>
+</div>
+
+<div class="two-col">
+<div class="field">
+<label for="duration">Duration (minutes)</label>
+<input id="duration" name="duration_minutes" type="number" min="1" max="600" placeholder="e.g. 60">
+</div>
+<div class="field">
+<label for="courseId">Associated course (optional)</label>
+<select id="courseId" name="course_id">
+<option value="">Standalone lesson</option>
+</select>
+</div>
+</div>
+
+<div class="format-fields active" id="liveFields">
+<div class="field">
+<label for="meetingUrl">Meeting URL *</label>
+<input id="meetingUrl" name="meeting_url" type="url" placeholder="https://meet.google.com/...">
+<small>Paste your Google Meet, Zoom or other meeting link.</small>
+</div>
+<div class="field">
+<label for="scheduledAt">Scheduled date and time *</label>
+<input id="scheduledAt" name="scheduled_at" type="datetime-local">
+</div>
+</div>
+
+<div class="format-fields" id="recordedFields">
+<div class="field">
+<label for="videoUrl">Video URL</label>
+<input id="videoUrl" name="content_url" type="url" placeholder="https://example.com/your-video">
+<small>Provide a direct video link, or upload an MP4, WEBM or MOV file below.</small>
+</div>
+<div class="field">
+<label>Upload recorded video</label>
+<div class="file-box">
+<input type="file" id="videoFile" name="file" accept=".mp4,.webm,.mov,video/mp4,video/webm,video/quicktime">
+</div>
+</div>
+</div>
+
+<div class="format-fields" id="uploadFields">
+<div class="field">
+<label>Learning material *</label>
+<div class="file-box">
+<input type="file" id="documentFile" name="file" accept=".pdf,.ppt,.pptx,.doc,.docx">
+<small>Accepted formats: PDF, PPT, PPTX, DOC and DOCX. Maximum file size: 100 MB.</small>
+</div>
+</div>
+</div>
+
+<button type="submit" class="submit-btn" id="submitBtn">Publish live lesson</button>
+<div class="message" id="message" role="status"></div>
+</form>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const formatCards = document.querySelectorAll(".format-card");
+const lessonType = document.getElementById("lessonType");
+const formTitle = document.getElementById("formTitle");
+const formIntro = document.getElementById("formIntro");
+const submitBtn = document.getElementById("submitBtn");
+const message = document.getElementById("message");
+const lessonForm = document.getElementById("lessonForm");
+
+const formats = {
+    LIVE: {
+        title: "Publish a live lesson",
+        intro: "Set a date and invite learners to join your session.",
+        button: "Publish live lesson"
+    },
+    RECORDED: {
+        title: "Publish a recorded lesson",
+        intro: "Share your video lesson through an upload or video URL.",
+        button: "Publish recorded lesson"
+    },
+    UPLOAD: {
+        title: "Upload learning materials",
+        intro: "Share useful documents and resources with learners.",
+        button: "Publish materials"
+    }
+};
+
+function setFormat(format) {
+    lessonType.value = format;
+
+    formatCards.forEach(card => {
+        card.classList.toggle("selected", card.dataset.format === format);
+    });
+
+    document.querySelectorAll(".format-fields").forEach(section => {
+        section.classList.remove("active");
+    });
+
+    document.getElementById(
+        format === "LIVE" ? "liveFields" :
+        format === "RECORDED" ? "recordedFields" : "uploadFields"
+    ).classList.add("active");
+
+    document.getElementById("meetingUrl").required = format === "LIVE";
+    document.getElementById("scheduledAt").required = format === "LIVE";
+    document.getElementById("documentFile").required = format === "UPLOAD";
+
+    document.getElementById("videoUrl").required = false;
+    document.getElementById("videoFile").required = false;
+
+    formTitle.textContent = formats[format].title;
+    formIntro.textContent = formats[format].intro;
+    submitBtn.textContent = formats[format].button;
+    message.textContent = "";
+    message.className = "message";
+}
+
+formatCards.forEach(card => {
+    card.addEventListener("click", () => setFormat(card.dataset.format));
+});
+
+async function loadCourses() {
+    try {
+        const response = await fetch("/api/courses");
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const select = document.getElementById("courseId");
+
+        (data.courses || []).forEach(course => {
+            const option = document.createElement("option");
+            option.value = course.course_id;
+            option.textContent = course.title;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Could not load courses", error);
+    }
+}
+
+lessonForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    message.textContent = "";
+    message.className = "message";
+
+    const format = lessonType.value;
+    const videoUrl = document.getElementById("videoUrl").value.trim();
+    const videoFile = document.getElementById("videoFile").files[0];
+
+    if (format === "RECORDED" && !videoUrl && !videoFile) {
+        message.textContent = "Please upload a video or provide a video URL.";
+        message.classList.add("error");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Publishing...";
+
+    try {
+        const formData = new FormData(lessonForm);
+
+        if (format === "LIVE") {
+            formData.delete("file");
+            formData.delete("content_url");
+        } else if (format === "RECORDED") {
+            formData.delete("meeting_url");
+            formData.delete("scheduled_at");
+            formData.delete("file");
+            if (videoFile) formData.set("file", videoFile);
+        } else {
+            formData.delete("meeting_url");
+            formData.delete("scheduled_at");
+            formData.delete("content_url");
+            formData.delete("file");
+            formData.set("file", document.getElementById("documentFile").files[0]);
+        }
+
+        const response = await fetch("/api/lessons", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.status === 401) {
+            window.location.href = "/login";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to publish lesson.");
+        }
+
+        message.textContent = "✓ " + data.message;
+        message.classList.add("success");
+        lessonForm.reset();
+        setFormat(format);
+
+    } catch (error) {
+        message.textContent = error.message;
+        message.classList.add("error");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = formats[lessonType.value].button;
+    }
+});
+
+loadCourses();
+</script>
+</body>
+</html>
